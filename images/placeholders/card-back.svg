@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="700" viewBox="0 0 500 700" role="img" aria-labelledby="title desc">
+  <title id="title">Soccer card back placeholder</title>
+  <desc id="desc">A neutral placeholder for a soccer card back image.</desc>
+  <rect width="500" height="700" fill="#f6f6f6"/>
+  <rect x="28" y="28" width="444" height="644" fill="#ffffff" stroke="#d7d7d7" stroke-width="2"/>
+  <rect x="52" y="52" width="396" height="82" fill="#242424"/>
+  <rect x="52" y="134" width="396" height="8" fill="#ef6c00"/>
+  <text x="72" y="105" fill="#ffffff" font-family="Arial, sans-serif" font-size="30" font-weight="700">CARD BACK</text>
+  <rect x="52" y="190" width="270" height="11" fill="#b9b9b9"/>
+  <rect x="52" y="224" width="350" height="8" fill="#d0d0d0"/>
+  <rect x="52" y="254" width="326" height="8" fill="#d0d0d0"/>
+  <rect x="52" y="284" width="366" height="8" fill="#d0d0d0"/>
+  <rect x="52" y="314" width="298" height="8" fill="#d0d0d0"/>
+  <rect x="52" y="373" width="396" height="154" fill="#f2f2f2" stroke="#d7d7d7"/>
+  <text x="250" y="583" text-anchor="middle" fill="#777777" font-family="Arial, sans-serif" font-size="18">Add your card image</text>
+</svg>

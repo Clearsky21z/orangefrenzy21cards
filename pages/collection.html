@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Browse the Orange Frenzy 21 personal soccer card collection."
+    />
+    <title>Collection | Orange Frenzy 21 Cards</title>
+    <link rel="icon" href="../images/orangefrenzy21-logo.png" />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body class="collection-page">
+    <header class="catalog-header">
+      <a class="catalog-brand" href="index.html" aria-label="Orange Frenzy 21 Cards home">
+        <img
+          class="catalog-logo"
+          src="../images/orangefrenzy21-logo.png"
+          alt="OrangeFrenzy21 Sports Card"
+        />
+      </a>
+
+      <nav class="catalog-nav" aria-label="Primary navigation">
+        <a href="index.html">Home</a>
+        <a href="gallery.html">Gallery</a>
+        <a class="active" href="collection.html">Collection</a>
+        <a href="statistics.html">Statistics</a>
+        <a href="about.html">About</a>
+      </nav>
+    </header>
+
+    <main class="catalog-main">
+      <section class="collection-section" id="collection" aria-labelledby="collection-title">
+        <div class="page-heading">
+          <p class="eyebrow">Personal archive</p>
+          <div class="collection-heading-row">
+            <h1 id="collection-title">Card Collection</h1>
+            <img
+              class="collection-heading-art"
+              src="../images/header-21-strip.png"
+              alt=""
+              aria-hidden="true"
+            />
+          </div>
+          <p>
+            Welcome to a collector's heaven of Orange Refractors, 21/25s,
+            and much more.
+          </p>
+        </div>
+
+        <div class="collection-toolbar">
+          <button
+            class="filter-toggle"
+            id="filterToggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="filters"
+          >
+            Filter
+          </button>
+
+          <p id="resultCount" aria-live="polite">Loading cards...</p>
+
+          <label class="sort-control">
+            <span>Sort by:</span>
+            <select id="sortFilter">
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+              <option value="player-asc">Player, A-Z</option>
+              <option value="player-desc">Player, Z-A</option>
+              <option value="set-asc">Set, A-Z</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="collection-layout">
+          <aside class="filters" id="filters" aria-label="Collection filters">
+            <div class="filter-heading">
+              <h2>Filter</h2>
+              <button id="clearFilters" type="button">Clear</button>
+            </div>
+
+            <label class="filter-group search-field">
+              <span>Search</span>
+              <input
+                id="searchInput"
+                type="search"
+                placeholder="Player, category, club/country, set..."
+                autocomplete="off"
+              />
+            </label>
+
+            <label class="filter-group">
+              <span>Category</span>
+              <select id="categoryFilter">
+                <option value="">All categories</option>
+              </select>
+            </label>
+
+            <label class="filter-group">
+              <span>Club/Country</span>
+              <select id="clubCountryFilter">
+                <option value="">All clubs/countries</option>
+              </select>
+            </label>
+
+            <label class="filter-group">
+              <span>Set</span>
+              <select id="setFilter">
+                <option value="">All sets</option>
+              </select>
+            </label>
+
+            <label class="filter-group">
+              <span>Year</span>
+              <select id="yearFilter">
+                <option value="">All years</option>
+              </select>
+            </label>
+
+            <label class="filter-group">
+              <span>Card type</span>
+              <select id="featureFilter">
+                <option value="">All cards</option>
+                <option value="numbered">Numbered</option>
+                <option value="auto">Autograph</option>
+                <option value="relic">Relic</option>
+                <option value="graded">Graded</option>
+              </select>
+            </label>
+          </aside>
+
+          <div class="collection-results">
+            <div class="card-grid" id="cardGrid" aria-live="polite"></div>
+            <nav class="pagination" id="pagination" aria-label="Collection pages" hidden>
+              <button class="pagination-nav" id="previousPage" type="button">
+                Previous
+              </button>
+              <div class="pagination-pages" id="paginationPages"></div>
+              <button class="pagination-nav" id="nextPage" type="button">Next</button>
+            </nav>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="catalog-footer">
+      <p class="catalog-footer-copyright">
+        &copy; 2026 OrangeFrenzy21Cards. All rights reserved.
+      </p>
+      <div class="footer-identity">
+        <p>Clubs &amp; Countries</p>
+        <div class="footer-crests">
+          <a
+            href="https://www.bvb.de/de/en.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Borussia Dortmund official website"
+          >
+            <img src="../images/footer-logos/borussia-dortmund.svg" alt="" />
+          </a>
+          <a
+            href="https://www.whufc.com/en"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="West Ham United official website"
+          >
+            <img src="../images/footer-logos/west-ham.svg" alt="" />
+          </a>
+          <a
+            href="https://www.knvb.com/oranje/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Netherlands national football team official website"
+          >
+            <img src="../images/footer-logos/netherlands.svg" alt="" />
+          </a>
+        </div>
+      </div>
+      <div class="footer-socials" aria-label="OrangeFrenzy21Cards social links">
+        <a
+          href="https://www.instagram.com/orangefrenzy21_cards?igsh=b2NrM25yZDZ5bTI0&amp;utm_source=qr"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="OrangeFrenzy21Cards on Instagram"
+        >
+          <img src="../images/footer-logos/instagram.png" alt="" />
+        </a>
+        <a
+          href="https://www.ebay.ca/usr/orangefrenzy21_cards"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="OrangeFrenzy21Cards on eBay"
+        >
+          <img src="../images/footer-logos/ebay.svg" alt="" />
+        </a>
+      </div>
+    </footer>
+
+    <dialog class="card-dialog" id="cardDialog" aria-labelledby="dialogTitle">
+      <button class="dialog-close" id="dialogClose" type="button" aria-label="Close">
+        &times;
+      </button>
+      <div class="dialog-content" id="dialogContent"></div>
+    </dialog>
+
+    <template id="cardTemplate">
+      <article class="card-item">
+        <button class="card-open" type="button">
+          <span class="card-image-wrap">
+            <img class="card-image" alt="" loading="lazy" />
+          </span>
+          <span class="card-info">
+            <span class="card-set"></span>
+            <strong class="card-title"></strong>
+            <span class="card-details"></span>
+          </span>
+        </button>
+      </article>
+    </template>
+
+    <script src="../script.js"></script>
+  </body>
+</html>
