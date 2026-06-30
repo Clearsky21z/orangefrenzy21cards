@@ -1269,14 +1269,15 @@ h2 {
   }
 
   .home-screen {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    --home-footer-bottom: calc(env(safe-area-inset-bottom) + 18px);
+    --home-footer-logo: clamp(42px, 13vw, 58px);
+    --home-pad-x: 20px;
+
+    display: block;
     min-height: 100svh;
     height: auto;
-    padding: calc(env(safe-area-inset-top) + 24px) 20px
-      calc(env(safe-area-inset-bottom) + 18px);
-    background-position: 63% center;
+    padding: 0;
+    background-position: 62% center;
   }
 
   .home-screen::before {
@@ -1300,41 +1301,42 @@ h2 {
   }
 
   .home-menu {
-    position: relative;
-    z-index: 1;
-    top: auto;
-    left: auto;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    width: min(360px, 100%);
-    max-width: calc(100vw - 40px);
-    margin: 0;
+    position: static;
+    width: auto;
     transform: none;
   }
 
   .home-logo {
-    width: clamp(120px, 34vw, 160px);
-    max-width: 42vw;
+    position: absolute;
+    z-index: 1;
+    bottom: var(--home-footer-bottom);
+    left: var(--home-pad-x);
+    width: var(--home-footer-logo);
+    max-width: none;
     margin: 0;
   }
 
   .home-nav {
-    width: min(300px, 100%);
+    position: absolute;
+    z-index: 1;
+    bottom: calc(
+      var(--home-footer-bottom) + var(--home-footer-logo) + clamp(18px, 4svh, 34px)
+    );
+    left: 50%;
+    width: min(340px, 80vw);
     gap: 0;
-    margin-top: clamp(84px, 18svh, 150px);
+    margin: 0 0 clamp(16px, 3svh, 28px);
     padding-right: 8px;
     border-top: 1px solid rgba(23, 23, 23, 0.24);
     border-bottom: 1px solid rgba(23, 23, 23, 0.24);
     background: linear-gradient(
       90deg,
-      rgba(255, 255, 255, 0.38),
-      rgba(255, 255, 255, 0.14)
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.08)
     );
     box-shadow: none;
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(1.5px);
+    transform: translateX(-50%);
   }
 
   .home-nav a {
@@ -1364,21 +1366,21 @@ h2 {
   }
 
   .home-copyright {
-    position: relative;
+    position: absolute;
     z-index: 1;
-    bottom: auto;
-    left: auto;
-    align-self: flex-start;
-    width: min(330px, calc(100vw - 40px));
-    margin: 24px 0 0;
+    bottom: calc(var(--home-footer-bottom) + 17px);
+    left: calc(var(--home-pad-x) + var(--home-footer-logo) + 9px);
+    width: auto;
+    max-width: calc(100vw - var(--home-pad-x) - var(--home-footer-logo) - 18px);
+    margin: 0;
     padding: 0;
     border: 0;
     border-radius: 0;
     background: transparent;
     box-shadow: none;
     color: rgba(23, 23, 23, 0.68);
-    font-size: 11px;
-    line-height: 1.35;
+    font-size: 10.5px;
+    line-height: 1.2;
     text-align: left;
     text-shadow: 0 1px 12px rgba(255, 255, 255, 0.75);
     backdrop-filter: none;
@@ -1387,18 +1389,17 @@ h2 {
 
 @media (max-width: 600px) {
   .home-screen {
-    padding: calc(env(safe-area-inset-top) + 20px) 18px
-      calc(env(safe-area-inset-bottom) + 16px);
-    background-position: 65% center;
-  }
+    --home-footer-bottom: calc(env(safe-area-inset-bottom) + 16px);
+    --home-footer-logo: clamp(42px, 13vw, 54px);
+    --home-pad-x: 18px;
 
-  .home-logo {
-    width: clamp(120px, 38vw, 150px);
+    padding: 0;
+    background-position: 62% center;
   }
 
   .home-nav {
-    width: min(288px, 100%);
-    margin-top: clamp(72px, 16svh, 128px);
+    left: calc(50% - 40px);
+    width: min(330px, 80vw);
   }
 
   .home-nav a {
@@ -1407,7 +1408,6 @@ h2 {
   }
 
   .home-copyright {
-    margin-top: 20px;
     font-size: 10px;
   }
 
@@ -1570,18 +1570,16 @@ h2 {
 
 @media (max-width: 480px) {
   .home-screen {
-    padding-right: 16px;
-    padding-left: 16px;
-    background-position: 68% center;
-  }
+    --home-footer-bottom: calc(env(safe-area-inset-bottom) + 16px);
+    --home-footer-logo: clamp(42px, 13vw, 52px);
+    --home-pad-x: 16px;
 
-  .home-logo {
-    width: clamp(118px, 39vw, 146px);
+    background-position: 62% center;
   }
 
   .home-nav {
-    width: min(280px, 100%);
-    margin-top: clamp(70px, 15svh, 118px);
+    left: calc(50% - 44px);
+    width: min(320px, 80vw);
   }
 
   .home-nav a {
@@ -1593,6 +1591,6 @@ h2 {
   }
 
   .home-copyright {
-    width: min(292px, calc(100vw - 32px));
+    font-size: 9.8px;
   }
 }
