@@ -1320,28 +1320,28 @@ h2 {
     position: absolute;
     z-index: 1;
     bottom: calc(
-      var(--home-footer-bottom) + var(--home-footer-logo) + clamp(18px, 4svh, 34px)
+      var(--home-footer-bottom) + var(--home-footer-logo) + clamp(22px, 4svh, 38px)
     );
-    left: 50%;
-    width: min(340px, 80vw);
+    right: 0;
+    left: 0;
+    width: min(82vw, 340px);
     gap: 0;
-    margin: 0 0 clamp(16px, 3svh, 28px);
-    padding-right: 8px;
-    border-top: 1px solid rgba(23, 23, 23, 0.24);
-    border-bottom: 1px solid rgba(23, 23, 23, 0.24);
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.2),
-      rgba(255, 255, 255, 0.08)
-    );
+    margin: 0 auto;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    background: rgba(255, 255, 255, 0.58);
     box-shadow: none;
-    backdrop-filter: blur(1.5px);
-    transform: translateX(-50%);
+    backdrop-filter: none;
+    transform: none;
   }
 
   .home-nav a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     min-height: 52px;
-    padding: 0 4px;
+    width: 100%;
+    padding: 0 14px;
     border-bottom: 1px solid rgba(23, 23, 23, 0.18);
     border-radius: 0;
     background: transparent;
@@ -1362,7 +1362,7 @@ h2 {
 
   .home-nav a:hover,
   .home-nav a.active {
-    padding-left: 4px;
+    padding-left: 14px;
   }
 
   .home-copyright {
@@ -1398,8 +1398,7 @@ h2 {
   }
 
   .home-nav {
-    left: calc(50% - 40px);
-    width: min(330px, 80vw);
+    width: min(82vw, 340px);
   }
 
   .home-nav a {
@@ -1578,8 +1577,7 @@ h2 {
   }
 
   .home-nav {
-    left: calc(50% - 44px);
-    width: min(320px, 80vw);
+    width: min(82vw, 340px);
   }
 
   .home-nav a {
