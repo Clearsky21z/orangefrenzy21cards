@@ -20,13 +20,13 @@ A no-build GitHub Pages site for displaying a personal soccer card collection.
 
 Use this checklist when adding cards from raw scans or slab photos.
 
-1. Confirm the card details from the request and the images: category, set, card
-   number, player, club or country, parallel, serial, auto/relic/graded status,
-   and front/back order.
+1. Confirm the card details from the request and the images: category, season,
+   set, card number, player, club or country, parallel, serial,
+   auto/relic/graded status, and front/back order.
 2. Find the newest source images, usually in `~/Downloads`, and visually inspect
    them before using them. Front/back order matters.
 3. Create a lowercase slug from the card details:
-   `year-set-player-cardnumber-parallel`. If a card has no printed card
+   `season-set-player-cardnumber-parallel`. If a card has no printed card
    number, omit the card number from the slug instead of adding placeholder
    text.
 4. Normalize raw portrait scans to `700x980` before adding them to the site:
@@ -43,6 +43,7 @@ PSA/BGS-style slab photos should keep slab proportions unless a specific slab
 normalization is requested.
 
 5. Add a new object to `cards.json`. Keep field names consistent:
+   - Use `season`, not `year`.
    - `clubCountry` is the team or country represented on the card, not the
      player's nationality.
    - `category` should use existing spelling, such as `Football/Soccer`.
@@ -63,15 +64,42 @@ normalization is requested.
 8. Do not change the collection card placeholder/background sizing per card. The
    gray tile background should stay the same for all cards; only normalize raw
    card image files.
-9. Validate after every add or edit:
+9. Sort and validate after every add or edit:
 
 ```sh
+npm run sort:cards
 npm run check
 ```
 
-Use the npm validation command as the standard backend check for card adds. It
-confirms `cards.json` is valid JSON and every `frontImage` and `backImage`
-reference exists.
+Use these npm commands as the standard backend check for card adds. They sort
+`cards.json`, confirm it is valid JSON, verify the `season` schema, and confirm
+every `frontImage` and `backImage` reference exists.
+
+Future card-add prompts should use this structure:
+
+```text
+CARD DATA:
+category:
+season:
+set:
+player:
+clubCountry:
+cardNumber:
+parallel:
+parallelColor:
+serial:
+auto:
+autoType:
+relic:
+relicType:
+graded:
+gradeCompany:
+grade:
+certification:
+orientation:
+frontSource:
+backSource:
+```
 
 Example card object:
 
@@ -81,7 +109,7 @@ Example card object:
   "player": "Maxi Moralez",
   "clubCountry": "New York City FC",
   "category": "Football/Soccer",
-  "year": 2025,
+  "season": "2024-25",
   "set": "2025 Topps Chrome MLS",
   "cardNumber": "EL-3",
   "parallel": "Base",
@@ -94,6 +122,7 @@ Example card object:
   "graded": false,
   "gradeCompany": null,
   "grade": null,
+  "certification": null,
   "frontImage": "images/cards/2025-topps-chrome-mls-maxi-moralez-el-3-front.webp",
   "backImage": "images/cards/2025-topps-chrome-mls-maxi-moralez-el-3-back.webp"
 }

@@ -19,7 +19,24 @@ if (!Array.isArray(cards)) {
   process.exit(1);
 }
 
-const missingReferences = [];
+const requiredFields = [
+  'id',
+  'player',
+  'clubCountry',
+  'category',
+  'season',
+  'set',
+  'cardNumber',
+  'parallel',
+  'parallelColor',
+  'serial',
+  'auto',
+  'relic',
+  'graded',
+  'frontImage',
+  'backImage'
+];
+const issues = [];
 
 cards.forEach((card, index) => {
   const cardId =
@@ -27,28 +44,47 @@ cards.forEach((card, index) => {
       ? card.id
       : `card at index ${index}`;
 
+  if (!card || typeof card !== 'object' || Array.isArray(card)) {
+    issues.push({ cardId, issue: 'card must be an object' });
+    return;
+  }
+
+  for (const field of requiredFields) {
+    if (!Object.hasOwn(card, field)) {
+      issues.push({ cardId, issue: `${field} is missing` });
+    }
+  }
+
+  if (Object.hasOwn(card, 'year')) {
+    issues.push({ cardId, issue: 'year must be replaced with season' });
+  }
+
+  if (typeof card.season !== 'string' || !card.season.trim()) {
+    issues.push({ cardId, issue: 'season is invalid' });
+  }
+
   for (const field of ['frontImage', 'backImage']) {
     const imagePath = card?.[field];
 
     if (typeof imagePath !== 'string' || !imagePath.trim()) {
-      missingReferences.push({ cardId, imagePath: `${field} is missing` });
+      issues.push({ cardId, issue: `${field} is missing or invalid` });
       continue;
     }
 
     if (!existsSync(resolve(repoRoot, imagePath))) {
-      missingReferences.push({ cardId, imagePath });
+      issues.push({ cardId, issue: `${field} path is missing: ${imagePath}` });
     }
   }
 });
 
-if (missingReferences.length > 0) {
-  console.error('Missing image references:');
+if (issues.length > 0) {
+  console.error('Card validation failed:');
 
-  for (const { cardId, imagePath } of missingReferences) {
-    console.error(`- ${cardId}: ${imagePath}`);
+  for (const { cardId, issue } of issues) {
+    console.error(`- ${cardId}: ${issue}`);
   }
 
   process.exit(1);
 }
 
-console.log(`All image paths exist for ${cards.length} cards.`);
+console.log(`cards.json schema and image paths are valid for ${cards.length} cards.`);

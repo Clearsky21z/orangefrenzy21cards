@@ -38,14 +38,29 @@
           <p>A live overview generated from every card currently in the collection.</p>
         </div>
 
-        <div class="stats-grid stats-grid-expanded">
+        <div class="stats-grid stats-grid-highlight" aria-label="Collection highlights">
+          <div>
+            <span class="stat-value" id="orange21Cards">0</span>
+            <span class="stat-label">Orange 21/25s</span>
+          </div>
+          <div>
+            <span class="stat-value" id="orangeCards">0</span>
+            <span class="stat-label">Orange cards</span>
+          </div>
+          <div>
+            <span class="stat-value" id="serial21Cards">0</span>
+            <span class="stat-label">21/xx cards</span>
+          </div>
+          <div>
+            <span class="stat-value" id="jerseyNumberCards">0</span>
+            <span class="stat-label">Jersey # cards</span>
+          </div>
+        </div>
+
+        <div class="stats-grid stats-grid-catalogue" aria-label="Catalogue summary">
           <div>
             <span class="stat-value" id="totalCards">0</span>
             <span class="stat-label">Cards catalogued</span>
-          </div>
-          <div>
-            <span class="stat-value" id="totalPlayers">0</span>
-            <span class="stat-label">Players</span>
           </div>
           <div>
             <span class="stat-value" id="numberedCards">0</span>
@@ -63,27 +78,19 @@
             <span class="stat-value" id="relicCards">0</span>
             <span class="stat-label">Relic cards</span>
           </div>
-          <div>
-            <span class="stat-value" id="totalClubCountries">0</span>
-            <span class="stat-label">Clubs/Countries</span>
-          </div>
-          <div>
-            <span class="stat-value" id="totalSets">0</span>
-            <span class="stat-label">Sets</span>
-          </div>
         </div>
 
         <div class="statistics-breakdowns">
           <section class="statistics-panel" aria-labelledby="club-country-title">
-            <p class="eyebrow">Distribution</p>
+            <p class="eyebrow">Distribution - Top 5</p>
             <h2 id="club-country-title">By Club/Country</h2>
             <ul class="statistics-list" id="clubCountryStats"></ul>
           </section>
 
-          <section class="statistics-panel" aria-labelledby="set-title">
-            <p class="eyebrow">Distribution</p>
-            <h2 id="set-title">By Set</h2>
-            <ul class="statistics-list" id="setStats"></ul>
+          <section class="statistics-panel" aria-labelledby="player-title">
+            <p class="eyebrow">Distribution - Top 5</p>
+            <h2 id="player-title">By Player</h2>
+            <ul class="statistics-list" id="playerStats"></ul>
           </section>
         </div>
       </section>

@@ -3,21 +3,22 @@ const galleryTopGrid = document.querySelector("#galleryTopGrid");
 const galleryFirstGrid = document.querySelector("#galleryFirstGrid");
 const galleryFirstReusGrid = document.querySelector("#galleryFirstReusGrid");
 const resultCount = document.querySelector("#resultCount");
+const orange21Cards = document.querySelector("#orange21Cards");
+const orangeCards = document.querySelector("#orangeCards");
+const serial21Cards = document.querySelector("#serial21Cards");
+const jerseyNumberCards = document.querySelector("#jerseyNumberCards");
 const totalCards = document.querySelector("#totalCards");
-const totalPlayers = document.querySelector("#totalPlayers");
 const numberedCards = document.querySelector("#numberedCards");
 const gradedCards = document.querySelector("#gradedCards");
 const autographCards = document.querySelector("#autographCards");
 const relicCards = document.querySelector("#relicCards");
-const totalClubCountries = document.querySelector("#totalClubCountries");
-const totalSets = document.querySelector("#totalSets");
 const clubCountryStats = document.querySelector("#clubCountryStats");
-const setStats = document.querySelector("#setStats");
+const playerStats = document.querySelector("#playerStats");
 const searchInput = document.querySelector("#searchInput");
 const categoryFilter = document.querySelector("#categoryFilter");
 const clubCountryFilter = document.querySelector("#clubCountryFilter");
 const setFilter = document.querySelector("#setFilter");
-const yearFilter = document.querySelector("#yearFilter");
+const seasonFilter = document.querySelector("#seasonFilter");
 const featureFilter = document.querySelector("#featureFilter");
 const sortFilter = document.querySelector("#sortFilter");
 const clearFilters = document.querySelector("#clearFilters");
@@ -51,7 +52,7 @@ const fallbackCards = [
     player: "Marco Reus",
     clubCountry: "Borussia Dortmund",
     category: "Football/Soccer",
-    year: 2017,
+    season: "2017-18",
     set: "2017-18 Topps Chrome UCL",
     cardNumber: "35",
     parallel: "Orange Refractor",
@@ -96,17 +97,48 @@ async function loadCards() {
 }
 
 function renderStats(cardList) {
+  setText(
+    orange21Cards,
+    cardList.filter((card) => {
+      const serial = parseSerial(card.serial);
+      return (
+        isOrangeCard(card) &&
+        serial.parsed &&
+        serial.numerator === 21 &&
+        serial.denominator === 25
+      );
+    }).length
+  );
+  setText(orangeCards, cardList.filter(isOrangeCard).length);
+  setText(
+    serial21Cards,
+    cardList.filter((card) => {
+      const serial = parseSerial(card.serial);
+      return serial.parsed && serial.numerator === 21;
+    }).length
+  );
+  setText(
+    jerseyNumberCards,
+    cardList.filter((card) => /jersey#/i.test(String(card.serial || ""))).length
+  );
   setText(totalCards, cardList.length);
-  setText(totalPlayers, uniqueValues(cardList, "player").length);
-  setText(numberedCards, cardList.filter((card) => Boolean(card.serial)).length);
-  setText(gradedCards, cardList.filter((card) => card.graded).length);
-  setText(autographCards, cardList.filter((card) => card.auto).length);
-  setText(relicCards, cardList.filter((card) => card.relic).length);
-  setText(totalClubCountries, uniqueValues(cardList, "clubCountry").length);
-  setText(totalSets, uniqueValues(cardList, "set").length);
+  setText(
+    numberedCards,
+    cardList.filter((card) => parseSerial(card.serial).parsed).length
+  );
+  setText(gradedCards, cardList.filter((card) => card.graded === true).length);
+  setText(autographCards, cardList.filter((card) => card.auto === true).length);
+  setText(relicCards, cardList.filter((card) => card.relic === true).length);
 
-  renderBreakdown(clubCountryStats, countBy(cardList, "clubCountry"));
-  renderBreakdown(setStats, countBy(cardList, "set"));
+  renderBreakdown(clubCountryStats, countBy(cardList, "clubCountry"), 5);
+  renderBreakdown(playerStats, countBy(cardList, "player"), 5);
+}
+
+function isOrangeCard(card) {
+  return (
+    String(card.parallelColor || "").toLowerCase() === "#f36b00" ||
+    String(card.parallel || "").toLowerCase().includes("orange")
+  );
 }
 
 function populateFilters(cardList) {
@@ -118,11 +150,11 @@ function populateFilters(cardList) {
   );
   fillSelect(setFilter, uniqueValues(cardList, "set"), "All sets");
   fillSelect(
-    yearFilter,
-    [...new Set(cardList.map((card) => card.year).filter(Boolean))]
-      .sort((a, b) => Number(b) - Number(a))
+    seasonFilter,
+    [...new Set(cardList.map((card) => card.season).filter(Boolean))]
+      .sort(compareSeasonDesc)
       .map(String),
-    "All years"
+    "All seasons"
   );
 }
 
@@ -158,18 +190,33 @@ function countBy(cardList, key) {
   }, new Map());
 }
 
-function renderBreakdown(container, counts) {
+function renderBreakdown(container, counts, limit = Infinity) {
   if (!container) return;
 
-  container.innerHTML = [...counts.entries()]
+  const entries = [...counts.entries()]
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, limit);
+  const maxCount = Math.max(...entries.map(([, count]) => count), 0);
+
+  container.innerHTML = entries
     .map(
-      ([label, count]) => `
-        <li>
-          <span>${escapeHtml(label)}</span>
-          <strong>${count}</strong>
+      ([label, count]) => {
+        const percentage = maxCount ? (count / maxCount) * 100 : 0;
+
+        return `
+        <li class="statistics-bar-item">
+          <div class="statistics-bar-heading">
+            <span>${escapeHtml(label)}</span>
+            <strong>${count}</strong>
+          </div>
+          <div class="statistics-bar-track" aria-hidden="true">
+            <span class="statistics-bar-fill" style="width: ${percentage.toFixed(
+              2
+            )}%"></span>
+          </div>
         </li>
-      `
+      `;
+      }
     )
     .join("");
 }
@@ -254,7 +301,7 @@ function getFilteredCards(cardList) {
   const selectedCategory = categoryFilter.value;
   const selectedClubCountry = clubCountryFilter.value;
   const selectedSet = setFilter.value;
-  const selectedYear = yearFilter.value;
+  const selectedSeason = seasonFilter.value;
   const selectedFeature = featureFilter.value;
 
   return cardList.filter((card) => {
@@ -262,7 +309,7 @@ function getFilteredCards(cardList) {
       card.player,
       card.category,
       card.clubCountry,
-      card.year,
+      card.season,
       card.set,
       card.cardNumber,
       card.parallel,
@@ -280,7 +327,7 @@ function getFilteredCards(cardList) {
       (!selectedCategory || card.category === selectedCategory) &&
       (!selectedClubCountry || card.clubCountry === selectedClubCountry) &&
       (!selectedSet || card.set === selectedSet) &&
-      (!selectedYear || String(card.year) === selectedYear) &&
+      (!selectedSeason || card.season === selectedSeason) &&
       matchesFeature(card, selectedFeature)
     );
   });
@@ -288,11 +335,109 @@ function getFilteredCards(cardList) {
 
 function sortCards(cardList, sortValue) {
   return [...cardList].sort((a, b) => {
-    if (sortValue === "oldest") return Number(a.year) - Number(b.year);
-    if (sortValue === "player-asc") return a.player.localeCompare(b.player);
-    if (sortValue === "player-desc") return b.player.localeCompare(a.player);
-    if (sortValue === "set-asc") return a.set.localeCompare(b.set);
-    return Number(b.year) - Number(a.year);
+    if (sortValue === "oldest") return compareCardsBySeasonAsc(a, b);
+    if (sortValue === "player-asc") return compareText(a.player, b.player) || compareCards(a, b);
+    if (sortValue === "player-desc") return compareText(b.player, a.player) || compareCards(a, b);
+    if (sortValue === "set-asc") return compareText(a.set, b.set) || compareCards(a, b);
+    return compareCards(a, b);
+  });
+}
+
+function compareCards(a, b) {
+  return (
+    compareSeasonDesc(a.season, b.season) ||
+    compareText(a.set, b.set) ||
+    compareText(a.player, b.player) ||
+    compareSerial(a.serial, b.serial) ||
+    compareNullableText(a.cardNumber, b.cardNumber) ||
+    compareText(a.parallel, b.parallel) ||
+    compareText(a.id, b.id)
+  );
+}
+
+function compareCardsBySeasonAsc(a, b) {
+  return (
+    compareSeasonAsc(a.season, b.season) ||
+    compareText(a.set, b.set) ||
+    compareText(a.player, b.player) ||
+    compareSerial(a.serial, b.serial) ||
+    compareNullableText(a.cardNumber, b.cardNumber) ||
+    compareText(a.parallel, b.parallel) ||
+    compareText(a.id, b.id)
+  );
+}
+
+function compareSeasonDesc(a, b) {
+  return seasonStart(b) - seasonStart(a) || compareText(b, a);
+}
+
+function compareSeasonAsc(a, b) {
+  return seasonStart(a) - seasonStart(b) || compareText(a, b);
+}
+
+function seasonStart(season) {
+  const match = String(season || "").match(/^(\d{4})/);
+  return match ? Number(match[1]) : Number.NEGATIVE_INFINITY;
+}
+
+function compareSerial(a, b) {
+  const parsedA = parseSerial(a);
+  const parsedB = parseSerial(b);
+
+  return (
+    parsedA.rank - parsedB.rank ||
+    parsedA.denominator - parsedB.denominator ||
+    parsedA.numerator - parsedB.numerator ||
+    compareText(parsedA.raw, parsedB.raw)
+  );
+}
+
+function parseSerial(serial) {
+  if (serial === null || serial === undefined || serial === "") {
+    return {
+      parsed: false,
+      rank: 2,
+      denominator: Number.POSITIVE_INFINITY,
+      numerator: Number.POSITIVE_INFINITY,
+      raw: ""
+    };
+  }
+
+  const raw = String(serial);
+  const match = raw.match(/(\d+)\/(\d+)/);
+  if (!match) {
+    return {
+      parsed: false,
+      rank: 1,
+      denominator: Number.POSITIVE_INFINITY,
+      numerator: Number.POSITIVE_INFINITY,
+      raw
+    };
+  }
+
+  return {
+    parsed: true,
+    rank: 0,
+    denominator: Number(match[2]),
+    numerator: Number(match[1]),
+    raw
+  };
+}
+
+function compareNullableText(a, b) {
+  const aMissing = a === null || a === undefined || a === "";
+  const bMissing = b === null || b === undefined || b === "";
+
+  if (aMissing && bMissing) return 0;
+  if (aMissing) return 1;
+  if (bMissing) return -1;
+  return compareText(a, b);
+}
+
+function compareText(a, b) {
+  return String(a ?? "").localeCompare(String(b ?? ""), undefined, {
+    numeric: true,
+    sensitivity: "base"
   });
 }
 
@@ -353,7 +498,7 @@ function clearAllFilters() {
   categoryFilter.value = "";
   clubCountryFilter.value = "";
   setFilter.value = "";
-  yearFilter.value = "";
+  seasonFilter.value = "";
   featureFilter.value = "";
   currentPage = 1;
   renderCards();
@@ -519,7 +664,7 @@ function escapeAttribute(value) {
   return escapeHtml(value).replaceAll("`", "&#096;");
 }
 
-[searchInput, categoryFilter, clubCountryFilter, setFilter, yearFilter, featureFilter, sortFilter]
+[searchInput, categoryFilter, clubCountryFilter, setFilter, seasonFilter, featureFilter, sortFilter]
   .filter(Boolean)
   .forEach((input) => {
     input.addEventListener("input", resetAndRenderCards);
