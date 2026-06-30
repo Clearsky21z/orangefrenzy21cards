@@ -4,8 +4,8 @@ A no-build GitHub Pages site for displaying a personal soccer card collection.
 
 ## What is included
 
-- `index.html` - GitHub Pages redirect to the site in `pages/`
-- `pages/index.html` - the full-screen artwork home page
+- `index.html` - the full-screen artwork home page
+- `pages/` - gallery, collection, statistics, about pages, plus a legacy home redirect
 - `pages/gallery.html` - featured cards and collection milestones
 - `pages/collection.html` - searchable card catalog with 16 cards per page
 - `pages/statistics.html` - live collection statistics
