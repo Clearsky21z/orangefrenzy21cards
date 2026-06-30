@@ -1307,13 +1307,7 @@ h2 {
   }
 
   .home-logo {
-    position: absolute;
-    z-index: 1;
-    bottom: var(--home-footer-bottom);
-    left: var(--home-pad-x);
-    width: var(--home-footer-logo);
-    max-width: none;
-    margin: 0;
+    display: none;
   }
 
   .home-nav {
@@ -1367,11 +1361,15 @@ h2 {
 
   .home-copyright {
     position: absolute;
+    display: flex;
     z-index: 1;
-    bottom: calc(var(--home-footer-bottom) + 17px);
-    left: calc(var(--home-pad-x) + var(--home-footer-logo) + 9px);
-    width: auto;
-    max-width: calc(100vw - var(--home-pad-x) - var(--home-footer-logo) - 18px);
+    bottom: var(--home-footer-bottom);
+    left: 50%;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: max-content;
+    max-width: calc(100vw - 32px);
     margin: 0;
     padding: 0;
     border: 0;
@@ -1384,6 +1382,15 @@ h2 {
     text-align: left;
     text-shadow: 0 1px 12px rgba(255, 255, 255, 0.75);
     backdrop-filter: none;
+    transform: translateX(-50%);
+  }
+
+  .home-copyright::before {
+    flex: 0 0 auto;
+    width: var(--home-footer-logo);
+    aspect-ratio: 1;
+    background: url("images/orangefrenzy21-logo.png") center / contain no-repeat;
+    content: "";
   }
 }
 
