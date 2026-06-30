@@ -36,8 +36,8 @@ const siteRoot = new URL("./", document.currentScript?.src || window.location.hr
 
 const CARDS_PER_PAGE = 16;
 const GALLERY_TOP_CARD_IDS = [
-  "2017-topps-chrome-uefa-marco-reus-35-orange-refractor",
-  "2017-topps-chrome-uefa-marco-reus-35-orange-refractor-auto",
+  "2017-18-topps-chrome-ucl-marco-reus-35-orange-refractor",
+  "2017-18-topps-chrome-ucl-marco-reus-35-auto-orange-refractor",
   "2020-topps-transcendent-bvb-marco-reus-bda-mr-auto-black"
 ];
 const GALLERY_FIRST_CARD_ID =
@@ -47,7 +47,7 @@ const GALLERY_FIRST_REUS_CARD_ID =
 
 const fallbackCards = [
   {
-    id: "2017-topps-chrome-uefa-marco-reus-35-orange-refractor",
+    id: "2017-18-topps-chrome-ucl-marco-reus-35-orange-refractor",
     player: "Marco Reus",
     clubCountry: "Borussia Dortmund",
     category: "Football/Soccer",
@@ -64,9 +64,9 @@ const fallbackCards = [
     grade: "10",
     certification: "84859190",
     frontImage:
-      "images/cards/2017-topps-chrome-uefa-marco-reus-35-orange-refractor-front.jpg",
+      "images/cards/2017-18-topps-chrome-ucl-marco-reus-35-orange-refractor-front.jpg",
     backImage:
-      "images/cards/2017-topps-chrome-uefa-marco-reus-35-orange-refractor-back.jpg"
+      "images/cards/2017-18-topps-chrome-ucl-marco-reus-35-orange-refractor-back.jpg"
   }
 ];
 

@@ -26,7 +26,9 @@ Use this checklist when adding cards from raw scans or slab photos.
 2. Find the newest source images, usually in `~/Downloads`, and visually inspect
    them before using them. Front/back order matters.
 3. Create a lowercase slug from the card details:
-   `year-set-player-cardnumber-parallel`.
+   `year-set-player-cardnumber-parallel`. If a card has no printed card
+   number, omit the card number from the slug instead of adding placeholder
+   text.
 4. Normalize raw portrait scans to `700x980` before adding them to the site:
 
 ```sh
@@ -64,11 +66,12 @@ normalization is requested.
 9. Validate after every add or edit:
 
 ```sh
-jq empty cards.json
-jq length cards.json
-jq -r '.[].frontImage, .[].backImage | select(.)' cards.json | while IFS= read -r path; do [ -f "$path" ] || printf '%s\n' "$path"; done
-sips -g pixelWidth -g pixelHeight images/cards/SLUG-front.jpg images/cards/SLUG-back.jpg
+npm run check
 ```
+
+Use the npm validation command as the standard backend check for card adds. It
+confirms `cards.json` is valid JSON and every `frontImage` and `backImage`
+reference exists.
 
 Example card object:
 

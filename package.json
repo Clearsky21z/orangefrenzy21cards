@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "check:json": "node -e \"JSON.parse(require('fs').readFileSync('cards.json','utf8')); console.log('cards.json valid')\"",
+    "check:images": "node tools/check-images.mjs",
+    "check": "npm run check:json && npm run check:images",
+    "format": "npx --no-install prettier --write cards.json index.html \"pages/**/*.html\" style.css script.js"
+  },
+  "devDependencies": {}
+}
