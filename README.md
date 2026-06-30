@@ -1,4 +1,4 @@
-# Orange Frenzy 21 Cards
+# OrangeFrenzy21Cards
 
 A no-build GitHub Pages site for displaying a personal soccer card collection.
 
