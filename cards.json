@@ -123,6 +123,26 @@
     "backImage": "images/cards/2025-26-topps-ucc-julian-brandt-tsr-br-relic-orange-foil-back.jpg"
   },
   {
+    "id": "2024-25-topps-chrome-bundesliga-nico-schlotterbeck-ba-ns-auto-orange-refractor",
+    "player": "Nico Schlotterbeck",
+    "clubCountry": "Borussia Dortmund",
+    "category": "Football/Soccer",
+    "season": "2024-25",
+    "set": "2024-25 Topps Chrome Bundesliga",
+    "cardNumber": "BA-NS",
+    "parallel": "AUTO - Orange Refractor",
+    "parallelColor": "#f36b00",
+    "serial": "21/25",
+    "auto": true,
+    "relic": false,
+    "graded": false,
+    "gradeCompany": null,
+    "grade": null,
+    "certification": null,
+    "frontImage": "images/cards/2024-25-topps-chrome-bundesliga-nico-schlotterbeck-ba-ns-auto-orange-refractor-front.jpg",
+    "backImage": "images/cards/2024-25-topps-chrome-bundesliga-nico-schlotterbeck-ba-ns-auto-orange-refractor-back.jpg"
+  },
+  {
     "id": "2024-25-topps-chrome-sapphire-bundesliga-almugera-kabar-ba-alk-auto-orange-sapphire-refractor",
     "player": "Almugera Kabar",
     "clubCountry": "Borussia Dortmund",
