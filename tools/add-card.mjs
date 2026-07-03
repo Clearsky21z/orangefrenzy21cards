@@ -37,11 +37,7 @@ function main() {
 
     const input = readInput(resolve(process.cwd(), inputPath));
     const cards = readCards();
-    const card = buildCard(input);
-
-    if (cards.some((existingCard) => existingCard.id === card.id)) {
-      fail(`Card id already exists in cards.json: ${card.id}`);
-    }
+    const card = ensureUniqueCardId(buildCard(input), cards);
 
     const frontSource = findSourceImage(input.frontSource, 'frontSource');
     const backSource = findSourceImage(input.backSource, 'backSource');
@@ -150,6 +146,55 @@ function buildCard(input) {
   card.backImage = `images/cards/${id}-back.jpg`;
 
   return card;
+}
+
+function ensureUniqueCardId(card, cards) {
+  const existingIds = new Set(cards.map((existingCard) => existingCard.id));
+
+  if (!existingIds.has(card.id)) {
+    return card;
+  }
+
+  const serialSuffix = serialSlugPart(card.serial);
+
+  if (!serialSuffix) {
+    fail(`Card id already exists in cards.json: ${card.id}`);
+  }
+
+  const uniqueId = `${card.id}-${serialSuffix}`;
+
+  if (existingIds.has(uniqueId)) {
+    fail(`Card id already exists in cards.json: ${uniqueId}`);
+  }
+
+  card.id = uniqueId;
+  card.frontImage = `images/cards/${uniqueId}-front.jpg`;
+  card.backImage = `images/cards/${uniqueId}-back.jpg`;
+
+  return card;
+}
+
+function serialSlugPart(serial) {
+  const normalizedSerial = normalizeNullable(serial);
+
+  if (normalizedSerial === null) {
+    return null;
+  }
+
+  const serialMatch = String(normalizedSerial).match(/(\d+)\s*\/\s*(\d+)/);
+
+  if (!serialMatch) {
+    return slugify([normalizedSerial]);
+  }
+
+  const numerator = Number.parseInt(serialMatch[1], 10);
+  const denominator = Number.parseInt(serialMatch[2], 10);
+
+  if (!Number.isFinite(numerator) || !Number.isFinite(denominator)) {
+    return null;
+  }
+
+  return `${numerator}-${denominator}`;
 }
 
 function addOptional(card, input, key) {
