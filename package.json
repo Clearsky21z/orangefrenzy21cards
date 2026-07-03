@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "add:card": "node tools/add-card.mjs",
     "check:json": "node -e \"JSON.parse(require('fs').readFileSync('cards.json','utf8')); console.log('cards.json valid')\"",
     "check:images": "node tools/check-images.mjs",
     "sort:cards": "node tools/sort-cards.mjs",

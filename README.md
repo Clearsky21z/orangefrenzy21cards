@@ -20,6 +20,49 @@ A no-build GitHub Pages site for displaying a personal soccer card collection.
 
 Use this checklist when adding cards from raw scans or slab photos.
 
+### Fast local card-add helper
+
+For repeated card adds, use the local backend helper. This is terminal-only
+developer tooling; it does not add any public website button, form, admin page,
+login, upload feature, or browser UI.
+
+1. Create a local JSON file such as `incoming/new-card.json`:
+
+```json
+{
+  "category": "Football/Soccer",
+  "season": "2024-25",
+  "set": "2024-25 Topps Chrome Sapphire Bundesliga",
+  "player": "Julian Brandt",
+  "clubCountry": "Borussia Dortmund",
+  "cardNumber": "BA-JBR",
+  "parallel": "AUTO - Orange Sapphire Refractor",
+  "parallelColor": "#f36b00",
+  "serial": "21/25",
+  "auto": true,
+  "relic": false,
+  "graded": false,
+  "frontSource": "5790",
+  "backSource": "5791"
+}
+```
+
+2. Run the helper:
+
+```sh
+npm run add:card -- incoming/new-card.json
+```
+
+The helper generates the normal slug/id, finds the newest matching front/back
+source images in `~/Downloads`, normalizes raw portrait cards to `700x980` or
+raw landscape cards to `980x700` when `orientation` is `"landscape"`, saves the
+JPGs in `images/cards/`, appends the new object to `cards.json`, then runs:
+
+```sh
+npm run sort:cards
+npm run check
+```
+
 1. Confirm the card details from the request and the images: category, season,
    set, card number, player, club or country, parallel, serial,
    auto/relic/graded status, and front/back order.
