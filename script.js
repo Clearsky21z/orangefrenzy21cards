@@ -124,7 +124,7 @@ function renderStats(cardList) {
   setText(totalCards, cardList.length);
   setText(
     numberedCards,
-    cardList.filter((card) => parseSerial(card.serial).parsed).length
+    cardList.filter((card) => String(card.serial || "").trim()).length
   );
   setText(gradedCards, cardList.filter((card) => card.graded === true).length);
   setText(autographCards, cardList.filter((card) => card.auto === true).length);

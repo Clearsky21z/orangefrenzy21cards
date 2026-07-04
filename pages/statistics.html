@@ -38,45 +38,74 @@
           <p>A live overview generated from every card currently in the collection.</p>
         </div>
 
-        <div class="stats-grid stats-grid-highlight" aria-label="Collection highlights">
-          <div>
-            <span class="stat-value" id="orange21Cards">0</span>
-            <span class="stat-label">Orange 21/25s</span>
-          </div>
-          <div>
-            <span class="stat-value" id="orangeCards">0</span>
-            <span class="stat-label">Orange cards</span>
-          </div>
-          <div>
-            <span class="stat-value" id="serial21Cards">0</span>
-            <span class="stat-label">21/xx cards</span>
-          </div>
-          <div>
-            <span class="stat-value" id="jerseyNumberCards">0</span>
-            <span class="stat-label">Jersey # cards</span>
-          </div>
-        </div>
+        <div class="collector-stats" aria-label="Collection highlights">
+          <section class="chase-panel" aria-labelledby="chase-title">
+            <div class="chase-copy">
+              <h2 id="chase-title">Orange 21/25 Chase</h2>
+            </div>
+            <div class="chase-number">
+              <span class="stat-value chase-value" id="orange21Cards">0</span>
+              <span class="stat-label">Orange 21/25s</span>
+            </div>
+            <div class="chase-support">
+              <div class="chase-support-box chase-support-pair">
+                <div>
+                  <span class="stat-value stat-value-small" id="orangeCards">0</span>
+                  <span class="stat-label">Orange Cards</span>
+                </div>
+                <div>
+                  <span class="stat-value stat-value-small" id="serial21Cards">0</span>
+                  <span class="stat-label">21/XX Cards</span>
+                </div>
+              </div>
+              <div class="chase-support-box">
+                <span class="stat-value stat-value-small" id="totalCards">0</span>
+                <span class="stat-label">Total Cards Catalogued</span>
+              </div>
+            </div>
+          </section>
 
-        <div class="stats-grid stats-grid-catalogue" aria-label="Catalogue summary">
-          <div>
-            <span class="stat-value" id="totalCards">0</span>
-            <span class="stat-label">Cards catalogued</span>
-          </div>
-          <div>
-            <span class="stat-value" id="numberedCards">0</span>
-            <span class="stat-label">Numbered cards</span>
-          </div>
-          <div>
-            <span class="stat-value" id="gradedCards">0</span>
-            <span class="stat-label">Graded cards</span>
-          </div>
-          <div>
-            <span class="stat-value" id="autographCards">0</span>
-            <span class="stat-label">Autograph cards</span>
-          </div>
-          <div>
-            <span class="stat-value" id="relicCards">0</span>
-            <span class="stat-label">Relic cards</span>
+          <div class="type-badges" aria-label="Card type badges">
+            <div class="type-badge type-badge-graded">
+              <img
+                class="stat-badge-logo"
+                src="../images/slab_logo.png"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="stat-value" id="gradedCards">0</span>
+              <span class="stat-label">Graded</span>
+            </div>
+            <div class="type-badge type-badge-auto">
+              <img
+                class="stat-badge-logo"
+                src="../images/auto_logo.png"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="stat-value" id="autographCards">0</span>
+              <span class="stat-label">Autograph</span>
+            </div>
+            <div class="type-badge type-badge-relic">
+              <img
+                class="stat-badge-logo"
+                src="../images/relic_logo.png"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="stat-value" id="relicCards">0</span>
+              <span class="stat-label">Relic</span>
+            </div>
+            <div class="type-badge type-badge-jersey">
+              <img
+                class="stat-badge-logo stat-badge-logo-jersey"
+                src="../images/jersey_%23_match_logo.png"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="stat-value" id="jerseyNumberCards">0</span>
+              <span class="stat-label">Jersey # Match</span>
+            </div>
           </div>
         </div>
 
