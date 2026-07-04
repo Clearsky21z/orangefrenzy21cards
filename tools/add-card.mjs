@@ -121,6 +121,7 @@ function buildCard(input) {
     parallel: requiredText(input.parallel, 'parallel'),
     parallelColor: requiredText(input.parallelColor, 'parallelColor'),
     serial,
+    note: normalizeNullable(input.note),
     auto: normalizeBoolean(input.auto, false),
     relic: normalizeBoolean(input.relic, false),
     graded: normalizeBoolean(input.graded, false),

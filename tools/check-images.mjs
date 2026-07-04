@@ -30,6 +30,7 @@ const requiredFields = [
   'parallel',
   'parallelColor',
   'serial',
+  'note',
   'auto',
   'relic',
   'graded',
@@ -61,6 +62,10 @@ cards.forEach((card, index) => {
 
   if (typeof card.season !== 'string' || !card.season.trim()) {
     issues.push({ cardId, issue: 'season is invalid' });
+  }
+
+  if (card.note !== null && typeof card.note !== 'string') {
+    issues.push({ cardId, issue: 'note must be null or a string' });
   }
 
   for (const field of ['frontImage', 'backImage']) {

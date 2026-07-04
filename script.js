@@ -131,7 +131,7 @@ function renderStats(cardList) {
   setText(relicCards, cardList.filter((card) => card.relic === true).length);
 
   renderBreakdown(clubCountryStats, countBy(cardList, "clubCountry"), 5);
-  renderBreakdown(playerStats, countBy(cardList, "player"), 5);
+  renderBreakdown(playerStats, countByPlayers(cardList), 5);
 }
 
 function isOrangeCard(card) {
@@ -186,6 +186,23 @@ function countBy(cardList, key) {
     const value = card[key];
     if (!value) return counts;
     counts.set(value, (counts.get(value) || 0) + 1);
+    return counts;
+  }, new Map());
+}
+
+function getPlayerNames(card) {
+  return String(card.player || "")
+    .split("&")
+    .map((name) => name.trim())
+    .filter(Boolean);
+}
+
+function countByPlayers(cardList) {
+  return cardList.reduce((counts, card) => {
+    getPlayerNames(card).forEach((playerName) => {
+      counts.set(playerName, (counts.get(playerName) || 0) + 1);
+    });
+
     return counts;
   }, new Map());
 }
@@ -587,6 +604,7 @@ function openCardDialog(card) {
         ${card.serial ? renderDetail("Serial", formatSerial(card.serial)) : ""}
         ${card.auto ? renderDetail("Autograph", formatAutograph(card)) : ""}
         ${card.relic ? renderDetail("Relic", formatRelic(card)) : ""}
+        ${hasNote(card) ? renderDetail("Note", card.note.trim()) : ""}
         ${
           card.graded
             ? renderDetail(
@@ -634,6 +652,10 @@ function renderDetail(label, value) {
       <dd>${escapeHtml(value || "Unknown")}</dd>
     </div>
   `;
+}
+
+function hasNote(card) {
+  return typeof card.note === "string" && card.note.trim().length > 0;
 }
 
 function formatAutograph(card) {
