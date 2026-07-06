@@ -32,6 +32,7 @@ const pagination = document.querySelector("#pagination");
 const paginationPages = document.querySelector("#paginationPages");
 const previousPage = document.querySelector("#previousPage");
 const nextPage = document.querySelector("#nextPage");
+const STATISTICS_BREAKDOWN_LIMIT = 8;
 
 const siteRoot = new URL("./", document.currentScript?.src || window.location.href);
 
@@ -130,8 +131,12 @@ function renderStats(cardList) {
   setText(autographCards, cardList.filter((card) => card.auto === true).length);
   setText(relicCards, cardList.filter((card) => card.relic === true).length);
 
-  renderBreakdown(clubCountryStats, countBy(cardList, "clubCountry"), 5);
-  renderBreakdown(playerStats, countByPlayers(cardList), 5);
+  renderBreakdown(
+    clubCountryStats,
+    countBy(cardList, "clubCountry"),
+    STATISTICS_BREAKDOWN_LIMIT
+  );
+  renderBreakdown(playerStats, countByPlayers(cardList), STATISTICS_BREAKDOWN_LIMIT);
 }
 
 function isOrangeCard(card) {
@@ -217,19 +222,24 @@ function renderBreakdown(container, counts, limit = Infinity) {
 
   container.innerHTML = entries
     .map(
-      ([label, count]) => {
+      ([label, count], index) => {
         const percentage = maxCount ? (count / maxCount) * 100 : 0;
+        const rank = index + 1;
+        const rankClass = rank <= 3 ? "statistics-rank-top" : "statistics-rank-standard";
 
         return `
         <li class="statistics-bar-item">
-          <div class="statistics-bar-heading">
-            <span>${escapeHtml(label)}</span>
-            <strong>${count}</strong>
-          </div>
-          <div class="statistics-bar-track" aria-hidden="true">
-            <span class="statistics-bar-fill" style="width: ${percentage.toFixed(
-              2
-            )}%"></span>
+          <span class="statistics-rank ${rankClass}" aria-label="Rank ${rank}">${rank}</span>
+          <div class="statistics-bar-content">
+            <div class="statistics-bar-heading">
+              <span>${escapeHtml(label)}</span>
+              <strong>${count}</strong>
+            </div>
+            <div class="statistics-bar-track" aria-hidden="true">
+              <span class="statistics-bar-fill" style="width: ${percentage.toFixed(
+                2
+              )}%"></span>
+            </div>
           </div>
         </li>
       `;

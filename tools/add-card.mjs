@@ -40,11 +40,25 @@ function main() {
     const card = ensureUniqueCardId(buildCard(input), cards);
 
     const frontSource = findSourceImage(input.frontSource, 'frontSource');
-    const backSource = findSourceImage(input.backSource, 'backSource');
+    const backSourceInput = normalizeNullable(input.backSource);
 
     mkdirSync(imagesDir, { recursive: true });
-    normalizeImage(frontSource, resolve(repoRoot, card.frontImage), card.orientation);
-    normalizeImage(backSource, resolve(repoRoot, card.backImage), card.orientation);
+    const frontOutput = resolve(repoRoot, card.frontImage);
+    const backOutput = resolve(repoRoot, card.backImage);
+
+    writeCardImage(frontSource, frontOutput, card);
+
+    if (backSourceInput === null) {
+      createPlaceholderImage(
+        backOutput,
+        normalizeNullable(input.backPlaceholderText) || 'To be Uploaded',
+        card.orientation,
+        card.graded ? getImageDimensions(frontOutput) : null
+      );
+    } else {
+      const backSource = findSourceImage(backSourceInput, 'backSource');
+      writeCardImage(backSource, backOutput, card);
+    }
 
     cards.push(card);
     writeFileSync(cardsPath, `${JSON.stringify(cards, null, 2)}\n`);
@@ -306,6 +320,37 @@ function findSourceImage(source, fieldName) {
   return match.filePath;
 }
 
+function writeCardImage(sourcePath, outputPath, card) {
+  if (card.graded) {
+    preserveImage(sourcePath, outputPath);
+    return;
+  }
+
+  normalizeImage(sourcePath, outputPath, card.orientation);
+}
+
+function preserveImage(sourcePath, outputPath) {
+  execFileSync(
+    'ffmpeg',
+    [
+      '-hide_banner',
+      '-loglevel',
+      'error',
+      '-y',
+      '-i',
+      sourcePath,
+      '-frames:v',
+      '1',
+      '-update',
+      '1',
+      '-q:v',
+      '2',
+      outputPath
+    ],
+    { stdio: 'inherit' }
+  );
+}
+
 function normalizeImage(sourcePath, outputPath, orientation) {
   const isLandscape = orientation === 'landscape';
   const width = isLandscape ? 980 : 700;
@@ -333,6 +378,81 @@ function normalizeImage(sourcePath, outputPath, orientation) {
     ],
     { stdio: 'inherit' }
   );
+}
+
+function createPlaceholderImage(outputPath, text, orientation, dimensions = null) {
+  const isLandscape = orientation === 'landscape';
+  const width = dimensions?.width || (isLandscape ? 980 : 700);
+  const height = dimensions?.height || (isLandscape ? 700 : 980);
+  const fontSize = Math.max(34, Math.round(Math.min(width, height) * 0.085));
+  const safeText = escapeDrawtext(String(text));
+  const fontCacheDir = resolve('/private/tmp', 'orangefrenzy21cards-fontconfig');
+  const fontOption = "font='Apple SD Gothic Neo\\:style=Bold':";
+  const filter = [
+    `drawbox=x=0:y=0:w=iw:h=ih:color=0xdedede:t=10`,
+    `drawtext=${fontOption}text='${safeText}':fontcolor=0x6d6d6d:bordercolor=0x6d6d6d:borderw=1:fontsize=${fontSize}:x=(w-text_w)/2:y=(h-text_h)/2`
+  ].join(',');
+
+  mkdirSync(fontCacheDir, { recursive: true });
+
+  execFileSync(
+    'ffmpeg',
+    [
+      '-hide_banner',
+      '-loglevel',
+      'error',
+      '-y',
+      '-f',
+      'lavfi',
+      '-i',
+      `color=c=0xf6f6f6:s=${width}x${height}`,
+      '-vf',
+      filter,
+      '-frames:v',
+      '1',
+      '-update',
+      '1',
+      '-q:v',
+      '2',
+      outputPath
+    ],
+    {
+      env: {
+        ...process.env,
+        XDG_CACHE_HOME: fontCacheDir
+      },
+      stdio: 'inherit'
+    }
+  );
+}
+
+function getImageDimensions(imagePath) {
+  const output = execFileSync(
+    'ffprobe',
+    [
+      '-v',
+      'error',
+      '-select_streams',
+      'v:0',
+      '-show_entries',
+      'stream=width,height',
+      '-of',
+      'csv=p=0:s=x',
+      imagePath
+    ],
+    { encoding: 'utf8' }
+  ).trim();
+  const [width, height] = output.split('x').map((value) => Number.parseInt(value, 10));
+
+  if (!Number.isFinite(width) || !Number.isFinite(height)) {
+    fail(`Unable to determine image dimensions for ${imagePath}`);
+  }
+
+  return { width, height };
+}
+
+function escapeDrawtext(text) {
+  return text.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/:/g, '\\:');
 }
 
 function runNpmScript(scriptName) {

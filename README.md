@@ -53,6 +53,7 @@ Optional fields can be included when needed:
   "relicType": "Match Worn",
   "note": "My first Marco Reus card!",
   "orientation": "landscape",
+  "backPlaceholderText": "To be Uploaded",
   "parallelParts": [
     {
       "text": "Orange",
@@ -83,6 +84,16 @@ newest matching front/back source images in `~/Downloads`, normalizes raw
 portrait cards to `700x980` or raw landscape cards to `980x700`, assigns
 front/back image filenames, saves the JPGs in `images/cards/`, and adds the
 card to `cards.json`.
+
+For graded cards (`"graded": true`), the script preserves the full slab image
+instead of cropping to raw-card proportions. The generated image should keep the
+grading label, plastic border, and card inside the slab visible.
+
+When the back image is not available, set `"backSource": null` and provide
+`"backPlaceholderText": "To be Uploaded"`. The script creates a generated back
+image placeholder with that text so `cards.json` still has a valid `backImage`
+path. For graded cards, the placeholder uses the preserved front slab image
+dimensions so the front/back display sizes match.
 
 The script also runs:
 

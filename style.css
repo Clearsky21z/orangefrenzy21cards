@@ -870,8 +870,39 @@ h2 {
 }
 
 .statistics-list li {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
   padding: 15px 0;
   border-top: 1px solid var(--soft-line);
+}
+
+.statistics-rank {
+  display: inline-grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.statistics-rank-top {
+  background: var(--orange);
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(243, 107, 0, 0.24);
+}
+
+.statistics-rank-standard {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--muted);
+}
+
+.statistics-bar-content {
+  min-width: 0;
 }
 
 .statistics-bar-heading {
