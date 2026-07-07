@@ -496,7 +496,7 @@ function renderParallel(card) {
           part.color || getParallelColor(card)
         )}">${escapeHtml(part.text || "")}</span>`
     )
-    .join(" ");
+    .join("");
 }
 
 function formatSerial(serial) {
