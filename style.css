@@ -7,6 +7,7 @@
   --line: #dedede;
   --soft-line: #eeeeee;
   --surface: #f6f6f6;
+  --image-stage: #f6f6f6;
   --page-width: 1440px;
   color: var(--text);
   background: var(--background);
@@ -421,7 +422,8 @@ h2 {
   aspect-ratio: 2 / 3;
   padding: 16px;
   overflow: hidden;
-  background: var(--surface);
+  background: var(--image-stage);
+  background-image: none;
 }
 
 .card-image {
@@ -1203,7 +1205,8 @@ h2 {
   place-items: center;
   width: 100%;
   overflow: hidden;
-  background: var(--surface);
+  background: var(--image-stage);
+  background-image: none;
 }
 
 .dialog-images-raw .dialog-image-frame {

@@ -133,7 +133,7 @@ function buildCard(input) {
     set,
     cardNumber,
     parallel: requiredText(input.parallel, 'parallel'),
-    parallelColor: requiredText(input.parallelColor, 'parallelColor'),
+    parallelColor: getParallelColor(input),
     serial,
     note: normalizeNullable(input.note),
     auto: normalizeBoolean(input.auto, false),
@@ -254,6 +254,24 @@ function requiredText(value, fieldName) {
   }
 
   return value.trim();
+}
+
+function getParallelColor(input) {
+  if (typeof input.parallelColor === 'string' && input.parallelColor.trim()) {
+    return input.parallelColor.trim();
+  }
+
+  if (Array.isArray(input.parallelParts)) {
+    const firstPartWithColor = input.parallelParts.find((part) => {
+      return part && typeof part.color === 'string' && part.color.trim();
+    });
+
+    if (firstPartWithColor) {
+      return firstPartWithColor.color.trim();
+    }
+  }
+
+  fail('parallelColor is required');
 }
 
 function slugify(parts) {
